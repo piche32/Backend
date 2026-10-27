@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>더하기</h1>
+<form action="/BE_01_maven/add">
+<input name="num1"> + <input name="num2"> = ? <button> 더해줘.</button>
+</form>
+
+<h1>구구단을 외자.</h1>
+<a href="/BE_01_maven/main?action=gugu&dan=7">7단</a>
+
+<h1>로그인</h>
+<form action = "/BE_01_maven/main" method="post">
+<input type="hidden" name="action" value="login">
+<input name="id"><br>
+<input name="pass" type ="password"><br>
+<button>login</button>
+</form>
+
+<h1>글쓰기</h1>
+<form method="post" action="/BE_01_maven/main">
+	<input type="hidden" name="action" value="write">
+	<textarea rows="5" cols="20" name="content"></textarea>
+	<button>write</button>
+</form>
+
+<h1>구매</h1>
+<a href="/BE_01_maven/main?action=buy">1개 구매</a>
+
+
+</body>
+</html>
