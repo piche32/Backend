@@ -1,4 +1,10 @@
-라이브러리 추가
+1. 라이브러리 추가
 https://mvnrepository.com/
 - Jakarta Servlet API
 - Jakarta Pages API
+
+2. 서버 추가
+	1. Window > Perspective > java EE
+	2. server 추가
+		- Tomcat v11.0 Server
+		- Tomcat installation directory: C:\SSAFY\apache-tomcat-11.0.18
