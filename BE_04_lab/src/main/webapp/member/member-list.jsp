@@ -16,7 +16,7 @@
                     <td>name</td>
                     <td>email</td>
                 </tr>
-                <c:forEach items="${members }" var="item">
+                <c:forEach items="${list }" var="item">
                     <tr>
                         <td>${item.mno }</td>
                         <td>${item.name }</td>

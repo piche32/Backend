@@ -44,16 +44,26 @@ public class MemberController extends HttpServlet implements ControllerHelper {
     private void memberRegist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             // TODO: 04. 다음 요청 사항을 만족시키세요.
-            //  01. 파라미터 추출 및 Member DTO 생성
+            //  01. 파라미터 추출 및 Member DTO 생성 -> 와 귀찮다....
+        	String name = request.getParameter("name");
+        	String email= request.getParameter("email");
+        	String pass= request.getParameter("pass");
+        	
+        	Member member = new Member(name, email, pass);
+        	
             //  02. 비지니스 로직 전문가인 BasicMemberService의 registMember를 호출해서 회원을 등록하세요.
-            //  03. 등록 성공 시 alertMsg와 함께 / 로 이동하세요. '/'에서 alertMsg를 alert으로 띄울 수 있도록 처리하세요.
+            mService.registMember(member);
+        	//  03. 등록 성공 시 alertMsg와 함께 / 로 이동하세요. '/'에서 alertMsg를 alert으로 띄울 수 있도록 처리하세요.
             String alertMsg = "등록되었습니다. 로그인 후 사용해주세요.";
-
+            request.setAttribute("alertMsg", alertMsg);
+//            	forward(request, response, "/"); //뭐가 없어서 index가 열릴 예정
+            	redirect(request, response, "/"); //뭐가 없어서 index가 열릴 예정
             // END
         } catch (Exception e) {
             e.printStackTrace();
             // TODO: 06. Exception 발생 시 logging 하고 error 메시지를 전달하여 다시 작성하도록 유도(/member/member-regist-form.jsp)하시오.
-
+            request.setAttribute("error", e.getMessage());
+            forward(request, response, "/member/member-regist-form.jsp");
             // END
         }
     }

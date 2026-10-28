@@ -41,7 +41,11 @@
         List<Member> users = List.of(new Member("a@ssafy.com", "a", "1"), new Member("b@ssafy.com", "b", "2"), new Member("c@ssafy.com", "c", "3"));
         %>
         <!-- TODO: 14. users의 내용을 반복문을 이용해서 출력해보자. -->
-
+		<ul>
+		<c:forEach items="<%=users %>" var="user">
+			<li>${user.name }, ${user.email } </li>
+		</c:forEach>
+		</ul>		
         <!-- END -->
     </div>
 </body>

@@ -11,9 +11,17 @@
 
     <div class="container">
         <!-- TODO: 12. parameter loginUser에 따라 별도의 화면을 출력하세요. -->
+		<c:if test="${empty param.loginUser }">
+			<div>파라미터에 loginUser가 없습니다.</div>
+		</c:if>
+		
+		
+		<c:if test="${!empty param.loginUser }">
+			<div>${param.loginUser}</div>
+		</c:if>
+		
         <!--  값이 있는 경우- 사용자에 대한 welcome message를 출력한다. -->
         <!--  값이 없는 경우- 로그인을 위한 화면을 출력한다. -->
-
         <!-- END -->
         <hr>
 

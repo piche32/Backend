@@ -16,8 +16,8 @@ import com.ssafy.live.model.dto.Member;
 // TODO: 01.FileMemberDao를 분석해 보세요. 
 public class FileMemberDao implements MemberDao {
     private static final FileMemberDao instance = new FileMemberDao();
-    private final File dataFile;
-    private List<Member> members;
+    private final File dataFile; //초기 데이터가 있는 곳
+    private List<Member> members; //애플리케이션 동작 과정에서 사용될 list
 
     public static FileMemberDao getInstance() {
         return instance;
@@ -32,7 +32,7 @@ public class FileMemberDao implements MemberDao {
             if (!dataFile.exists()) {
                 dataFile.createNewFile();
             }
-            load(); // 파일이 존재하면 로드
+            load(); // 파일이 존재하면 로드 -- 정보가 1억건!!
 
         } catch (IOException e) {
             e.printStackTrace();
