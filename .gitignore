@@ -96,4 +96,7 @@ replay_pid*
 #Eclipse Server 관련 설정 제외
 /Servers/
 .metadata/
+
+.groject
+.classpath
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
