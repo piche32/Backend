@@ -14,7 +14,13 @@
         String root = request.getContextPath();
         %>
         <!--TODO: 10. 구구단 결과를 화면에 반영하세요.-->
-
+		<h1>구구단 <%=request.getParameter("dan") %> 단</h1>
+		<%
+			List<String> result = (List)request.getAttribute("result");
+			for(String row: result) {
+				out.println(row+"<br>");
+			}
+		%>
         <!--END-->
         <a href="<%=root%>/main?action=gugu-form">다시하기</a>
     </div>

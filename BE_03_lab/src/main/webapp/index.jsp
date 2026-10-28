@@ -11,12 +11,12 @@
     <div>
         <%
         // TODO: 04. request 내장 객체를 이용해서 context 루트 경로를 설정해두자.
-         String root = "";
+         String root = request.getContextPath();
         %>
 
         <h1>구구단 처리</h1>
         <!-- TODO: 05. 구구단 조회를 위한 페이지를 요청하는 링크(action=gugu-form)를 만들어보자. -->
-
+		<a href="<%=root %>/main?action=gugu-form">구구단 폼 좀~~</a>
         <!-- END -->
     </div>
 </body>

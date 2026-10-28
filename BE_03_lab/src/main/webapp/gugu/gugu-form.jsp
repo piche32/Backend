@@ -18,7 +18,11 @@
         <h1>알고싶은 단을 입력하세요.</h1>
         <!--TODO: 07. 서버로 구구단 요청을 위한 form을 만들어보세요.-->
         <!-- action=gugu로 구구단을 요청. 파라미터는 dan으로 한다.-->
-
+		<form action="<%=root%>/main">
+			<input type = "hidden" name="action" value= "gugu">
+			<input name="dan">
+			<button>알려줘.</button>
+		</form>
         <!--END-->
     </div>
 
@@ -33,7 +37,9 @@
 </script>
 <!-- TODO: 12. <script>에서 attribute에 alertMsg가 있다면 alert으로 출력하세요. -->
 <!--  메시지 자체에 ""가 포함 되기도 하기 때문에 ``을 이용해서 묶어주자. -->
-<script></script>
+<script>
+	showAlertMessage('<%=request.getAttribute("alertMsg") %>')
+</script>
 
 <!--END-->
 </html>
