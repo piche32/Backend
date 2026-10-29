@@ -19,7 +19,7 @@
       <c:if test="${!empty cookie.recentGugu }">
         <fieldset>
           <legend>최근에 찾아본 구구단</legend>
-          <c:forTokens items="${cookie.recentGugu.value }" delims="-" var="item">
+          <c:forTokens items="${cookie.recentGugu.value }" delims="-" var="item"> //특정 문자열이 있을 때, delims를 기준으로 쪼개주는 게 forTokens
             <a href="${root }/main?action=gugu&dan=${item}">${item }</a>
           </c:forTokens>
         </fieldset>

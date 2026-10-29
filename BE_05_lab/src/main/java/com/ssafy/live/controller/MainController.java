@@ -43,12 +43,12 @@ public class MainController extends HttpServlet implements ControllerHelper {
         // TODO: 13. exception 요청을 확인하세요. 
         case "exception" -> exception(request, response);
         // 오류 처리 방식: 잘못된 action 요청이 들어오면 404 에러를 발생
-        //default -> forward(request, response, "/error/404.jsp");
 
         // TODO: 19. cart-form 요청을 확인하세요. 
         case "cart-form" -> forward(request, response, "/status/cart-form.jsp");
 
-        default -> response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404 처리
+//        default -> response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404 처리
+        default -> forward(request, response, "/error/404.jsp");
         }
     }
 
@@ -74,7 +74,7 @@ public class MainController extends HttpServlet implements ControllerHelper {
         setupCookie("just-10-min", "10분유지쿠키", 60 * 10, "/", response);
         setupCookie("just-1-min", URLEncoder.encode("1분 유지 쿠키", "UTF-8"), 60 * 1, null, response);
         setupCookie("status-path", "경로지정쿠키", -1, request.getContextPath() + "/member", response);
-        setupCookie("immediate-del", "010-1234-5678", 0, null, response);
+        setupCookie("immediate-del", "010-1234-5678", 0, null, response); //context root
         redirect(request, response, "/main?action=check-cookie");
 
         // END
@@ -88,6 +88,18 @@ public class MainController extends HttpServlet implements ControllerHelper {
             request.setAttribute("result", result);
             // TODO: 05. 최근 찾아본 구구단의 목록을 recentGugu라는 이름으로 쿠키에 담아서 관리해보자.
             //  쿠키의 value로 사용할 수 있는 문자열로 구분자를 두자.
+            Cookie [] cookies = request.getCookies();
+            String preValue = "";
+            if(cookies != null) {
+            	for (Cookie c : cookies) {
+            		if(c.getName().equals("recentGugu")) {
+            			preValue = c.getValue();
+            			break;
+            		}
+            	}
+            }
+            String newValue = preValue.isEmpty() ? preValue + dan : preValue + "-" + dan;
+            setupCookie("recentGugu", newValue, 60*10, null, response);
 
             // END
             forward(request, response, "/gugu/gugu-result.jsp");

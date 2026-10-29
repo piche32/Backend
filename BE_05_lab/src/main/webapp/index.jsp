@@ -21,7 +21,7 @@
         <h2>Exception Handling</h2>
         <ul>
             <li>
-                <a href="${root }/not_exists">404</a>
+                <a href="${root }/main?action=not_exists">404</a>
             </li>
             <li>
                 <a href="${root }/main?action=exception&status-code=405">405</a>

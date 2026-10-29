@@ -15,12 +15,25 @@
         <welcome-file>default.xhtml</welcome-file>
     </welcome-file-list>
     <!-- TODO: 07. session-timeout 속성을 1분으로 변경해보자. -->
-
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
     <!-- END -->
 
     <!-- TODO: 14. 오류페이지를 연결하세요. -->
+    <error-page>
+    	<location>/error/error.jsp</location>
+    </error-page>
     <!--  404 발생 시 /error/404.jsp 호출 -->
+    <error-page>
+    	<error-code>404</error-code>
+    	<location>/error/404.jsp</location>
+    </error-page>
     <!--  500 발생 시 /error/500.jsp 호출 -->
+    <error-page>
+    	<error-code>500</error-code>
+    	<location>/error/500.jsp</location>
+    </error-page>
 
     <!-- END -->
 </web-app>

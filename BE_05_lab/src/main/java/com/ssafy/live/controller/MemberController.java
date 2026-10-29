@@ -71,11 +71,24 @@ public class MemberController extends HttpServlet implements ControllerHelper {
 
     private void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
+        //1. param 확인
+    	String email = request.getParameter("email");
         String pass = request.getParameter("pass");
+        
+        //2. 비즈니스 로직 처리
+        Member member = mService.login(email, pass);
+        
+        //3. 화면 처리
         // TODO: 10. 로그인 성공 시 세션에 loginUser를 키로 member를 추가하고 "/" 로 redirect 하세요.
-            //  로그인 실패시는 alertMsg에 메시지를 추가하고 "/member/login-form.jsp"로 이동하세요.
-
+        if(member != null) {
+        	request.getSession().setAttribute("loginUser", member);
+        	redirect(request, response, "/");
+        }
+        //  로그인 실패시는 alertMsg에 메시지를 추가하고 "/member/login-form.jsp"로 이동하세요.
+        else {
+        	request.setAttribute("alertMsg", "아이디/패스워드 확인");
+        	forward(request, response, "/member/login-form.jsp");
+        }
         // END
     }
 
@@ -90,7 +103,8 @@ public class MemberController extends HttpServlet implements ControllerHelper {
     private void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO: 11. 세션을 만료시키고 /로 redirect 하세요.
-
+    	request.getSession().invalidate();
+    	redirect(request, response, "/");
         // END
     }
 
