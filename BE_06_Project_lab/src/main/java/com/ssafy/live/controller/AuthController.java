@@ -67,6 +67,10 @@ public class AuthController extends HttpServlet implements ControllerHelper {
             throws ServletException, IOException {
         // TODO: 14. email parameter를 이용하여 회원 정보를 조회하고, request에 저장한다.
         //  조회 결과는 /member/member-detail.jsp에서 확인한다.
+    	String email = request.getParameter("email");
+    	Member member = mService.findByEmail(email);
+    	request.setAttribute("member", member);
+    	forward(request, response, "/member/member-detail.jsp");
 
         // END
     }
@@ -74,7 +78,10 @@ public class AuthController extends HttpServlet implements ControllerHelper {
     private void memberModifyForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO: 17. 회원 정보를 조회하여 정보 수정 화면(/member/member-modify-form.jsp)으로 이동한다.
-
+    	String email = request.getParameter("email");
+    	Member member =  mService.findByEmail(email);
+    	request.setAttribute("member", member);
+    	forward(request, response, "/member/member-modify-form.jsp");
         // END
     }
 
@@ -88,7 +95,13 @@ public class AuthController extends HttpServlet implements ControllerHelper {
 
         Member member = new Member(mno, name, email, pass, role);
         // TODO: 18. 회원 정보를 수정 처리한다. 현재 로그인된 사용자의 경우 세션에 저장된 사용자 정보도 변경해준다.
-
+        mService.memberModify(member);
+        HttpSession session = request.getSession();
+        Member loginUser = (Member)session.getAttribute("loginUser");
+        if(loginUser.getEmail().equals(member.getEmail())) {
+        	session.setAttribute("loginUser", member);
+        }
+        redirect(request, response, "/auth?action=member-detail&detail&email=" + email);
         // END
     }
 
@@ -96,9 +109,18 @@ public class AuthController extends HttpServlet implements ControllerHelper {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         // TODO: 20. memberDelete를 구현해보자.
+        mService.memberDelete(email);
         // 당사자가 삭제된 경우 - logout 처리 - /로 redirect
+        HttpSession session = request.getSession();
+        Member loginUser = (Member)session.getAttribute("loginUser");
+        if(loginUser.getEmail().equals(email)) {
+        	session.invalidate();
+        	redirect(request, response, "/");
+        } else {
+        	redirect(request, response, "/auth?action=member-list&currentPage=1");
+        }
         //  다른 회원을 삭제한 경우 - 목록 보기(/auth?action=member-list&currentPage=1)로
-
+        
         // END
     }
 }

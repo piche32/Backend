@@ -54,7 +54,21 @@
 <!-- TODO: 05. #email에서 input event 발생 시 중복 여부를 확인(/member?action=email-check)하세요.-->
 <!--  상황에 따라 is-valid와 is-invalid를 추가/삭제한다. -->
 <!--  참조: https://getbootstrap.com/docs/5.3/forms/validation/#server-side -->
- <script></script> 
+ <script>
+ 	document.querySelector("#email").addEventListener("input", async (e) => {
+ 		const target = e.target;
+ 		const response = await fetch(`${root}/member?action=email-check&email=\${target.value}`);
+ 		const json = await response.json(); // {canUse: true/false}
+ 		if(json.canUse) {
+ 			target.classList.add("is-valid");
+ 			target.classList.remove("is-invalid");
+ 		} else {
+ 			target.classList.remove("is-valid");
+ 			target.classList.add("is-invalid");
+ 		}
+ 	})
+ 
+ </script> 
 
 <!-- END -->
 </html>

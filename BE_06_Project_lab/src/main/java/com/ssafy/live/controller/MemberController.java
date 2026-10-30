@@ -91,7 +91,10 @@ public class MemberController extends HttpServlet implements ControllerHelper {
     private void emailCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: 03. 전달된 email이 중복되지 않았는지 JSON으로 반환하는 메서드를 작성하세요.
         //  반환 형태: Map<String, Boolean> ex: "canUse":true
-
+    	//1. 파라미터 가져오기
+    	String email = request.getParameter("email");
+    	Member member = mService.findByEmail(email);
+    	toJSON(Map.of("canUse", member == null), response);
         // END
     }
 

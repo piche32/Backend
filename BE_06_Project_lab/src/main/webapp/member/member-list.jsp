@@ -11,10 +11,9 @@
     <div class="container">
         <h1>멤버 목록</h1>
         <!-- TODO: 11. 페이징 시 검색조건 유지를 위한 form 구성을 확인하세요. -->
-        <form class="row mb-3" action="${root }/auth" method="get"
-            id="search-form">
-            <input type="hidden" name="action" value="member-list" /> <input
-                type="hidden" id="currentPage" name="currentPage" value="1" />
+        <form class="row mb-3" action="${root }/auth" method="get" id="search-form">
+            <input type="hidden" name="action" value="member-list" />
+            <input type="hidden" id="currentPage" name="currentPage" value="1" />
             <div class="d-flex justify-content-end">
                 <select class="form-select w-25" name="key">
                     <option value="">검색항목 선택</option>
@@ -22,8 +21,7 @@
                     <option value="email" ${param.key=='email'?'selected':'' }>email</option>
                 </select>
 
-                <input type="text" class="form-control w-25" name="word"
-                    value="${param.word}">
+                <input type="text" class="form-control w-25" name="word" value="${param.word}">
                 <button type="submit" class="btn btn-primary">검색</button>
             </div>
         </form>
@@ -39,7 +37,7 @@
                         <td>${item.mno }</td>
                         <td>${item.name }</td>
                         <!-- TODO: 13-02. 상세정보를 위한 링크를 작성하세요.-->
-						<td>${item.email }</td>
+						<td><a href="${root }/auth?action=member-detail&email=${item.email}">${item.email }</a></td>
 
                         <!--END-->
                     </tr>

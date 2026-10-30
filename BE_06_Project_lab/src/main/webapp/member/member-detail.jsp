@@ -95,7 +95,13 @@ const memberModify = ()=>{
 
 <!-- TODO: 19. 삭제 버튼 클릭 시 동작을 처리하세요.-->
 <!--  의도를 다시 한번 확인하고 맞다면 제출-->
- <script></script>
+ <script>
+ const memberDelete = ()=>{
+	 if(confirm("정말 삭제하시겠습니까?")){
+		document.querySelector("#form-delete").submit();
+	 }
+ }
+ </script>
 
 <!-- END -->
 </html>
