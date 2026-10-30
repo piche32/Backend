@@ -10,4 +10,6 @@ public interface MemberDAO {
 
 	public List<Student> doList();
 
+	public void doRegist(Student student);
+
 }

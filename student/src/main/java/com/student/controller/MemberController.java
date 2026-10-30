@@ -43,25 +43,45 @@ public class MemberController extends HttpServlet {
 			disp.forward(request, response);
 			break;
 			
-			case "login":
-				doLogin(request, response);
-				break;
-			case "list":
-				doList(request, response);
-				break;
-				
-			case "logout":
-				doLogout(request, response);
-				break;
-			default:
-				break;
+		case "regist_form":
+			request.getRequestDispatcher("/regist_form.jsp").forward(request, response);
+			break;
+		
+		case "login":
+			doLogin(request, response);
+			break;
+		case "list":
+			doList(request, response);
+			break;
+			
+		case "logout":
+			doLogout(request, response);
+			break;
+		case "regist":
+			doRegist(request, response);
+		default:
+			break;
 		}
 	}
 	
+	private void doRegist(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String userid = request.getParameter("userid");
+		String userpw = request.getParameter("userpw");
+		String userName = request.getParameter("userName");
+		int score = Integer.parseInt(request.getParameter("score"));
+		
+		Student student = new Student(userid, userpw, userName, score);
+		mService.doRegist(student);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("loginStudent", student.getUserName());
+		response.sendRedirect(request.getContextPath() + "/member?mymenu=list"); //직접 doList를 호출하면 안 된다. 이렇게 컨트롤러를 거쳐서 가야 StudentList를 얻어서 갈 수 있다.
+	
+	}
 	private void doLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		request.getRequestDispatcher("/").forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
 	}
 	/**DB에서 회원목록 가져와서 데이터 담아서 list.jsp를 forward 호출 **/
 	private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

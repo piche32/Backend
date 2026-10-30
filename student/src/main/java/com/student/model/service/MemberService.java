@@ -9,5 +9,7 @@ public interface MemberService {
 	public Student login(Student student);
 
 	public List<Student> doList();
+
+	public void doRegist(Student student);
 	
 }

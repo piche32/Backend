@@ -24,4 +24,8 @@ public class MemberServiceImpl implements MemberService{
 	public List<Student> doList() {
 		return dao.doList();
 	}
+	@Override
+	public void doRegist(Student student) {
+		dao.doRegist(student);
+	}
 }

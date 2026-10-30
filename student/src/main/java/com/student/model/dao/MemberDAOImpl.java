@@ -32,4 +32,8 @@ public class MemberDAOImpl implements MemberDAO{
 			return list;
 		}
 	}
+	@Override
+	public void doRegist(Student student) {
+		list.add(student);
+	}
 }
