@@ -60,7 +60,14 @@ use testdb;
 
 
 
-# 기존 테이블 test_emp 이용하여 구조 복사하는 test_emp2 테이블 생성(WITH NO DATA)
+# 기존 테이블 emp 이용하여 구조 복사하는 test_emp2 테이블 생성(WITH NO DATA)
+create table test_emp2 like emp;
+
+show create table emp;
+show create table test_emp2;
+
+select count(*) from test_emp2;
+
 
 
 
@@ -127,41 +134,76 @@ USE SSAFYDB;
 # inline-VIEW버전 피봇 테이블 VIEW 생성 버전으로 변경
 # step1-뷰 생성
 
+create or replace view v_emp_dept_job_sal
+as
+select	 deptno, empno, ename, sal,
+		case job when 'CLERK' then sal	end  as CLERK,
+		case job when 'MANAGER' then sal	end  as MANAGER,
+		case job when 'PRESIDENT' then sal	end  as PRESIDENT,
+		case job when 'ANALYST' then sal	end  as ANALYST,
+		case job when 'SALESMAN' then sal	end  as SALESMAN
+from 	emp;
 
+select * from v_emp_dept_job_sal;
 
+insert into emp(empno, ename, sal, deptno) values(9999, 'PSH', 12000, 20);
+
+delete from emp where empno = 9999;
 # step2-위의 뷰 생성버전으로 피봇테이블 변경
-
-
+select	 deptno,
+			count(CLERK),
+            count(MANAGER),
+            count(PRESIDENT),
+            count(ANALYST), 
+            count(SALESMAN)
+from 		v_emp_dept_job_sal
+group by 	deptno with rollup;
 
 
 
 # 부서별 직무별 사원들의 월평균 급여 조회 
-
-
+select	 deptno,
+			AVG(CLERK),
+            AVG(MANAGER),
+            AVG(PRESIDENT),
+            AVG(ANALYST), 
+            AVG(SALESMAN)
+from 		v_emp_dept_job_sal
+group by 	deptno with rollup;
 
 
 -- CASE2) 보안상 특정 레코드나 컬럼만 조회하도록
 # 10번부서의 사원들의 사번, 이름, 부서번호, 월급여만 조회하는 v_emp2뷰 생성
-
+create or replace view v_emp2
+as select empno, ename, deptno, sal
+from emp
+where deptno = 10;
 
 
 # v_emp2뷰 사용하여 데이터 조회
-
+select * from v_emp2;
+select * from emp;
 
 
 # v_emp2뷰 사용하여 데이터 삽입 
-
+insert into v_emp2 values (9999, 'PSH', 10, 12000);
+insert into v_emp2 values (9997, 'ssafy', 20, 22000);
 
 
 
 # 10번 부서에서 근무하는 사원들의 사원번호, 사원이름, 부서번호, 월급여 조회하는 v_emp2 뷰 생성
 # with check option
-
+create or replace view v_emp2
+as select empno, ename, deptno, sal
+from emp
+where deptno = 10
+with check option;
 
 
 
 # v_emp2 뷰를 이용한 데이터 삽입 시도
-
+insert into v_emp2 values (9999, 'PSH', 10, 12000);
+insert into v_emp2 values (9997, 'ssafy', 20, 22000);
 
 
 
