@@ -108,12 +108,28 @@ where sal > all (
 -- ------------------------------------------------
 
 # 상사(관리자)인 사원번호, 사원이름 조회 
-
+select m.empno, m.ename
+from emp m
+where exists (
+				select 1 -- 굳이 뭘 가져오는 형태로 짤 필요 없어서 의미 없는 상수를 씀
+                from emp e
+                where e.mgr = m.empno
+			);
 
 
 # 상사(관리자)가 아닌 사원번호, 사원이름 조회 
 
+select m.empno, m.ename
+from emp m
+where not exists (
+				select 1 -- 굳이 뭘 가져오는 형태로 짤 필요 없어서 의미 없는 상수를 씀
+                from emp e
+                where e.mgr = m.empno
+			);
 
+select distinct m.empno, m.ename
+from emp m
+join emp e on (m.EMPNO = e.mgr);
 
 
 -- ------------------------------------------------
