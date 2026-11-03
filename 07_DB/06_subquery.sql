@@ -5,14 +5,34 @@ USE ssafydb;
 -- ------------------------------------------------
 
 # 이름이 'SMITH'인 사원과 같은 부서에 근무하는 사원이름, 부서번호 조회
-
-
+select ENAME, deptno
+from emp
+where deptno = (
+					select deptno
+                    from emp
+                    where ename = 'SMITH'
+				);
 
 # 이름이 'SMITH'인 사원보다 나중에 입사한 사원이름, 입사일 조회                      
+select ENAME, hiredate
+from emp
+where hiredate > (
+					select hiredate
+                    from emp
+                    where ename = 'SMITH'
+				);
 
 
 
 # 이름이 'SMITH'인 사원의 급여보다 많은 급여를 받는 사원이름, 월급여 조회
+select ENAME, sal
+from emp
+where sal > (
+					select sal
+                    from emp
+                    where ename = 'SMITH'
+				);
+
 
 
 
@@ -22,21 +42,58 @@ USE ssafydb;
 
 # 상사(관리자)인 사원번호, 사원이름 조회
 
+select empno, ename
+from emp
+where empno in (
+				select distinct mgr
+                from emp
+                where mgr is not null
+                );
 
 
 # 상사(관리자)가 아닌 사원번호, 사원이름 조회
 
 
+select empno, ename
+from emp
+where empno not in (
+				select distinct mgr
+                from emp
+                where mgr is not null
+                );
+
 
 # SALESMAN의 최저월급여보다 월급여가 많은 사원이름, 월급여 조회
 
+select ename, sal
+from emp
+where sal > any (
+				select sal
+                from emp
+                where job = 'SALESMAN'
+			);
 
 
 # SALESMAN의 최대월급여보다 월급여가 적은 사원이름, 월급여 조회
 
+select ename, sal
+from emp
+where sal < any (
+				select sal
+                from emp
+                where job = 'SALESMAN'
+			);
 
         
-# SALESMAN의 최대월월급여보다 급여가 많은 사원이름, 월급여 조회
+# SALESMAN의 최대월급여보다 급여가 많은 사원이름, 월급여 조회
+
+select ename, sal
+from emp
+where sal > all (
+				select sal
+                from emp
+                where job = 'SALESMAN'
+			);
 
 
 
