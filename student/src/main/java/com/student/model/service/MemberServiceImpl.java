@@ -1,5 +1,6 @@
 package com.student.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.student.model.dao.MemberDAO;
@@ -16,8 +17,14 @@ public class MemberServiceImpl implements MemberService{
 		return instance;
 	}
 	@Override
-	public Student login(com.student.model.dto.Student student) {
-		return dao.login(student);
+	public Student login(Student student) {
+		try {
+			return dao.login(student);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 		
 	}
 	@Override

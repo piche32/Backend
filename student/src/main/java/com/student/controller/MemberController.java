@@ -3,6 +3,7 @@ package com.student.controller;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -96,14 +97,35 @@ public class MemberController extends HttpServlet {
 		//request에서 파라미터 꺼내기, DTO에 담기, Service 호출, DAO 호출 리턴. Controller에서 jsp 호출
 		String userid = request.getParameter("userid");
 		String userpw = request.getParameter("userpw");
+		String remember = request.getParameter("remember");
+		
 		System.out.println(userid + ", " + userpw);
 		Student student = new Student(userid, userpw, "", 0);
 		Student resStudent = mService.login(student);
+		
 		if(resStudent != null) {
 			System.out.println("로그인 성공");
+			
+			// id 저장 기능 쿠키
+			if(remember == null) { //id 저장 체크 X
+				Cookie cookie = new Cookie("remember", "del");
+				cookie.setMaxAge(0); //브라우저에 쿠키가 도착하면 즉시 삭제 => 음수는 세션 끝나면 삭제
+				response.addCookie(cookie);
+			}
+			else { //id 저장 체크
+				Cookie cookie = new Cookie("remember", userid);
+				cookie.setMaxAge(60 * 60 * 24 * 7); //초단위 7일
+				//path 지정안하면 현재경로 => 권장하지 않음
+				cookie.setPath(request.getContextPath());
+				response.addCookie(cookie);
+			}
+			
+			
+			
 			//세션의 사용자 정보 담고, list로 보내자
 			HttpSession session = request.getSession();
 			session.setAttribute("loginStudent", resStudent.getUserName());
+			
 			response.sendRedirect(request.getContextPath() + "/member?mymenu=list"); //직접 doList를 호출하면 안 된다. 이렇게 컨트롤러를 거쳐서 가야 StudentList를 얻어서 갈 수 있다.
 		}
 		else {
