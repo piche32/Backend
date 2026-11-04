@@ -13,14 +13,15 @@
 	<form action="${root }/member" method="post">
 		<input type="hidden" name="mymenu" value="regist">
 		<label for="userName">name</label>
-		<input type="text" id="userName" placeholder="이름을 입력해주세요" name="userName" value="홍길동"> <br/>
+		<input type="text" id="userName" placeholder="이름을 입력해주세요" name="userName"> <br/>
 		<label for="userid">id</label>
-		<input type="text" id="userid" placeholder="id를 입력해주세요" name="userid" value="ssafy"> <br/>
+		<input type="text" id="userid" placeholder="id를 입력해주세요" name="userid"> <br/>
 		<label for="userpw">pw</label>
-		<input type="password" id="userpw" placeholder="pw를 입력해주세요" name="userpw" value="1234"> <br/>
+		<input type="password" id="userpw" placeholder="pw를 입력해주세요" name="userpw"> <br/>
 		<label for="score">score</label>
-		<input type="number" id="score" placeholder="점수를 입력해주세요" name="score" value="1234"> <br/>
-		<input type="submit" value="회원가입">
+		<input type="number" id="score" placeholder="점수를 입력해주세요" name="score"> <br/>
+		<input type="submit" value="회원등록">
+		<a href="${root}/member?mymenu=list">목록</a>
 <!-- 		<button>로그인2</button> -->
 <!-- 		똑같이 동작됨 -->
 	</form>

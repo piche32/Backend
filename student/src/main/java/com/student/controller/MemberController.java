@@ -54,6 +54,9 @@ public class MemberController extends HttpServlet {
 		case "list":
 			doList(request, response);
 			break;
+		case "detail":
+			doDetail(request, response);
+			break;
 			
 		case "logout":
 			doLogout(request, response);
@@ -65,11 +68,16 @@ public class MemberController extends HttpServlet {
 		}
 	}
 	
+	private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		request.getRequestDispatcher("detail.jsp").forward(request, response);
+		
+	}
 	private void doRegist(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String userid = request.getParameter("userid");
 		String userpw = request.getParameter("userpw");
 		String userName = request.getParameter("userName");
-		int score = Integer.parseInt(request.getParameter("score"));
+		int score = Integer.valueOf(request.getParameter("score"));
 		
 		Student student = new Student(userid, userpw, userName, score);
 		mService.doRegist(student);

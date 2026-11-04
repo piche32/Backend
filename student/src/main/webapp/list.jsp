@@ -11,10 +11,10 @@
 	<h2>회원목록</h2>
 	<c:forEach var="student" items="${list }">
 		id : ${student.userid} </br>
-		이름 : ${student.userName} </br>
+		이름 : <a href = "${root }/member?mymenu=detail&userid=${student.userid}"> ${student.userName} </a> </br>
 		점수 : ${student.score} </br>
 		<hr>
 	</c:forEach>
-	<a href="/student/member?mymenu=regist_form">회원가입</a>
+	<a href="${root }/member?mymenu=regist_form">회원가입</a>
 </body>
 </html>

@@ -29,10 +29,21 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public List<Student> doList() {
-		return dao.doList();
+		try {
+			return dao.doList();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	@Override
 	public void doRegist(Student student) {
-		dao.doRegist(student);
+		try {
+			dao.doRegist(student);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
