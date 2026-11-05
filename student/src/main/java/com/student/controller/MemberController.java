@@ -57,20 +57,51 @@ public class MemberController extends HttpServlet {
 		case "detail":
 			doDetail(request, response);
 			break;
-			
 		case "logout":
 			doLogout(request, response);
 			break;
 		case "regist":
 			doRegist(request, response);
+			break;
+		case "update_form":
+			doUpdateForm(request, response);
+			break;
+		case "update":
+			doUpdate(request, response);
+			break;
 		default:
 			break;
 		}
 	}
 	
+	private void doUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String userid = request.getParameter("userid");
+		String userpw = request.getParameter("userpw");
+		String userName = request.getParameter("userName");
+		int score = Integer.valueOf(request.getParameter("score"));
+		
+		Student student = new Student(userid, userpw, userName, score);
+		
+		System.out.println("doUpdate: " + student.toString());
+		mService.update(student);
+
+		response.sendRedirect(request.getContextPath() + "/member?mymenu=detail&userid=" + userid);
+	
+	
+		
+	}
+	private void doUpdateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userId = request.getParameter("userid");
+		Student student = mService.detail(userId);
+		request.setAttribute("student", student);
+		request.getRequestDispatcher("/update_form.jsp").forward(request, response);
+		
+	}
 	private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("detail.jsp").forward(request, response);
+		String userId = request.getParameter("userid");
+		Student student = mService.detail(userId);
+		request.setAttribute("student", student);
+		request.getRequestDispatcher("/detail.jsp").forward(request, response);
 		
 	}
 	private void doRegist(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -98,7 +129,7 @@ public class MemberController extends HttpServlet {
 		List<Student> list = mService.doList();
 		request.setAttribute("list", list);
 		
-		request.getRequestDispatcher("list.jsp").forward(request, response);
+		request.getRequestDispatcher("/list.jsp").forward(request, response);
 	}
 	private void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		System.out.println("doLogin()");

@@ -8,8 +8,7 @@
 </head>
 <body>
 	<%@ include file="/common/headernav.jsp" %>
-	<h1>3반 홈</h1>
-	<h3>회원가입</h3>
+	<h2>회원 등록</h2>
 	<form action="${root }/member" method="post">
 		<input type="hidden" name="mymenu" value="regist">
 		<label for="userName">name</label>
@@ -20,7 +19,7 @@
 		<input type="password" id="userpw" placeholder="pw를 입력해주세요" name="userpw"> <br/>
 		<label for="score">score</label>
 		<input type="number" id="score" placeholder="점수를 입력해주세요" name="score"> <br/>
-		<input type="submit" value="회원등록">
+		<input type="submit" value="회원 등록">
 		<a href="${root}/member?mymenu=list">목록</a>
 <!-- 		<button>로그인2</button> -->
 <!-- 		똑같이 동작됨 -->

@@ -12,4 +12,8 @@ public interface MemberService {
 
 	public void doRegist(Student student);
 	
+	public Student detail(String userId);
+
+	public void update(Student student);
+	
 }

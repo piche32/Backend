@@ -21,7 +21,6 @@ public class MemberServiceImpl implements MemberService{
 		try {
 			return dao.login(student);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -32,7 +31,6 @@ public class MemberServiceImpl implements MemberService{
 		try {
 			return dao.doList();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -42,8 +40,25 @@ public class MemberServiceImpl implements MemberService{
 		try {
 			dao.doRegist(student);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public Student detail(String userId) {
+		try {
+			return dao.detail(userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Override
+	public void update(Student student) {
+		try {
+			dao.update(student);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

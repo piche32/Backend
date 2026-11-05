@@ -8,9 +8,25 @@
 </head>
 <body>
 	<%@ include file="/common/headernav.jsp" %>
-	<br> 
-	id : ${student.userid} <br> 
-	이름 : ${student.userName} <br> 
-	점수 : ${student.score} <br> 
+	<h2>상세 정보</h2>
+
+	<table>
+		<tr>
+			<th>아이디 </th>
+			<td>${student.userid}</td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td>${student.userName }</td>
+
+		</tr>
+		<tr>
+			<th>점수</th>
+			<td>${student.score }</td>
+		</tr>
+		<a href="${root }/member?mymenu=delete&userid=${student.userid}">삭제</a> | 
+		<a href="${root }/member?mymenu=update_form&userid=${student.userid}">수정</a>
+		
+	</table>
 </body>
 </html>

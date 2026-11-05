@@ -31,7 +31,7 @@ WHERE userid='ssafy' AND userpw = '1234';
 SELECT userid, userpw, username, score
 FROM student;
 -- 상세 조회 : SELECT userid
-SELECT userid, userpw, username, scroe
+SELECT userid, userpw, username, score
 FROM student
 WHERE userid='ssafy';
 -- 등록 : INSERT

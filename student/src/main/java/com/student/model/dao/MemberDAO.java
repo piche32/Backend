@@ -13,4 +13,8 @@ public interface MemberDAO {
 
 	public void doRegist(Student student) throws SQLException;
 
+	public Student detail(String userId) throws SQLException;
+
+	public void update(Student student) throws SQLException;
+
 }

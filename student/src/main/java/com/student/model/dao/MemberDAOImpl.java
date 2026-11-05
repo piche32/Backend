@@ -112,6 +112,59 @@ public class MemberDAOImpl implements MemberDAO{
 		}
 		
 	}
+	@Override
+	public Student detail(String userId) throws SQLException {
+		System.out.println("dao: detail");
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		Student retStudent = null;
+		ResultSet rs = null;
+		String sql = "SELECT userid, userpw, username, score "
+				+ "FROM student "
+				+ "WHERE userid=?";
+		
+		try {
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				retStudent = new Student();
+				retStudent.setUserid(rs.getString("userid"));
+				retStudent.setUserpw(rs.getString("userpw"));
+				retStudent.setUserName(rs.getString("username"));
+				retStudent.setScore(rs.getInt("score"));
+			}
+			
+		} finally {
+			DBUtil.close(rs, pstmt, conn);
+		}
+		
+		return retStudent;
+	}
+	@Override
+	public void update(Student student) throws SQLException {
+		System.out.println("dao: update");
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE student "
+				+ "SET userpw=?, username=?, score=? "
+				+ "WHERE userid=?";
+		try {
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, student.getUserpw());
+			pstmt.setString(2, student.getUserName());
+			pstmt.setInt(3, student.getScore());
+			pstmt.setString(4, student.getUserid());
+			pstmt.executeUpdate();
+		} finally {
+			DBUtil.close(pstmt, conn);
+		}
+		
+	}
 }
 
 //1. pom.xml jdbc 디펜던시 등록, 메이븐 업데이트 <= 프로젝트에서 한번만 설정하면 됨
