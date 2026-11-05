@@ -32,7 +32,6 @@ public class CalculatorTest {
 	
 	@Test
 	public void divideTest() {
-		
 		ArithmeticException e = Assertions.assertThrows(ArithmeticException.class, ()->{
 			calc.divide(1, 0);
 		});
