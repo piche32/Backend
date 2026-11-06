@@ -113,7 +113,7 @@ and		gender = 'f';
    create index idx_gender_age on users(gender, age);
    
 explain analyze
-select  no, age,gender, name
+select  name, age,gender
 from	users
 where gender = 'f';
     
