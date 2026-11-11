@@ -34,7 +34,6 @@ public class SimpleController {
 	//string: logical한 view name
 	@GetMapping({"/", "/hello"})
 	public String hello() {
-		System.out.println("================================================");
 		return "index";
 	}
     // END
@@ -66,24 +65,47 @@ public class SimpleController {
     // END
 
     // TODO: 06-1. GET: /simple/redir 요청이 들어오면 / 로 redirect 처리해보자.
-
+     @GetMapping("/redir")
+     public String redirect() {
+    	 return "redirect:/";
+     }
     // END
 
     // TODO: 06-2. GET: /simple/json 요청이 들어오면 사용자 정보를 map에 담아 반환해보자.
-
+     @GetMapping("/json")
+     public @ResponseBody Map<String, Object> json() {
+    	 return Map.of("name", "홍길동", "age", 10);
+     }
     // END
 
+     @PostMapping("/regist")
     // TODO: 08-2. POST: /simple/regist로 전달된 파라미터들을 이용해서 회원 가입 해보자.
     //  Member 객체를 생성하고, 세션에 저장 후 "/"로 리다이렉트 처리
-
+     public String regist(@ModelAttribute Member member, HttpSession session) {
+    	 session.setAttribute("member", member);
+    	 return "redirect:/";
+     }
     // END
 
     // TODO: 09-1. GET: /simple/cookie로 전달된 쿠키에서 name, age을 추출해서 Map으로 반환해보자.
-
+     @GetMapping("/cookie")
+     public @ResponseBody Map<String, Object> cookie(@CookieValue String name, @CookieValue int age) {
+    	 return Map.of("name", name, "age", age);
+     }
     // END
 
     // TODO: 10-2. GET: /simple/redir-attr 요청이 들어오면 세션, 모델, 리다이렉트 속성에 값을 담아
     // "/"로 리다이렉트 처리해보자.
+     
+     @GetMapping("/redir-attr")
+     public String redirTest(HttpSession session, Model model, RedirectAttributes redir) {
+    	 session.setAttribute("bySession", "session");
+    	 model.addAttribute("byModel", "model");
+    	 redir.addAttribute("byParam", "redirAttr");
+    	 redir.addFlashAttribute("byFlash", "flash");
+    	 
+    	 return "redirect:/";
+     }
 
     // END
 
@@ -97,7 +119,8 @@ public class SimpleController {
     // upload된 파일의 정보를 model을 통해 전달한다.
 
     @PostMapping("/fileupload")
-    public String fileUpload(@RequestParam MultipartFile file, @RequestParam(required = false) String desc, Model model)
+    public String fileUpload(@RequestParam MultipartFile file,
+    		@RequestParam(required = false) String desc, Model model)
             throws IllegalStateException, IOException {
         model.addAllAttributes(service.uploadFile(file, desc));
         return "index";

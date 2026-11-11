@@ -55,14 +55,25 @@ public class ControllerTest {
 
     // TODO: 07-1. 매번 테스트 전에 Mock 객체 service의 동작을 정의해보자.
     //  echo("Hello")가 호출되면 "echo: Hello"를 반환한다.
-
+    @BeforeEach
+    public void setupMockBean() {
+    	when(service.echo("Hello")).thenReturn("echo: Hello");
+    }
     // END
 
     @Test
     public void simpleEchoTest() throws Exception {
         // TODO: 07-2. /simple/echo?msg=Hello 요청의 동작을 테스트 해보자.
         // given: 요청 만들기
-
+    	var request = get("/simple/echo").param("msg", "Hello");
+    	
+    	//when: 요청하기
+    	var action = mock.perform(request);
+    	
+    	//then: 검증하기
+    	action.andExpect(status().isOk())
+    	.andExpect(model().attribute("msg", "echo: Hello"))
+    	.andExpect(view().name("index"));
         // END
     }
 
@@ -71,7 +82,15 @@ public class ControllerTest {
         // TODO: 07-3. /simple/json요청의 동작을 테스트해보자.
         //  주의: content가 MockMvcResultMatchers.content() 임!
         //  MockMvcRequestBuilders.content() 아님
-
+    	//given
+    	var request = get("/simple/json");
+    	
+    	//when
+    	var action = mock.perform(request);
+    	//then
+    	action.andExpect(status().isOk())
+    	.andExpect(jsonPath("$.name",equalTo("홍길동")))
+    	.andExpect(jsonPath("$.age", equalTo(10)));
         // END
     }
 
@@ -88,7 +107,11 @@ public class ControllerTest {
         var request = MockMvcRequestBuilders.post("/simple/regist").params(params);
         // TODO: 08-3. /simple/regist의 동작을 테스트 해보자.
         // when
-
+        var action = mock.perform(request);
+        //then
+        action.andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl("/"))
+        .andExpect(request().sessionAttribute("member", member));
         // END
     }
 
@@ -96,7 +119,13 @@ public class ControllerTest {
     public void cookieTest() throws Exception {
         // TODO: 09-2. /simple/cookie의 동작을 테스트 해보자.
         // given
-
+    	var request = get("/simple/cookie").cookie(new Cookie("name", "hong"),
+    			new Cookie("age", "10"));
+    	//when
+    	var action = mock.perform(request);
+    	//then
+    	action.andExpect(status().isOk())
+    	.andExpect(jsonPath("$.name", equalTo("hong")));
         // END
     }
 

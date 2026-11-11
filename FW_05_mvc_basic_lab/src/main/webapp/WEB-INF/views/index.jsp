@@ -26,7 +26,13 @@
 
             <hr />
             <!-- TODO: 05-4. /simple/add를 호출하고 반환값을 확인해보자.-->
-
+			<form action="${root }/simple/add" method="post">
+                <input type="text" name="num1" />
+                <input type="text" name="num2" />
+                <button>add</button>
+                <br />
+                <output>${result }</output>
+            </form>
             <!-- END -->
             <hr />
             <!-- TODO: 08-1. /simple/regist를 호출해서 회원가입하고 바로 로그인 해보자. -->
@@ -83,7 +89,7 @@
                     <h4>일반</h4>
                     <span>desc: ${desc }</span> <br>
                     <a href="${root }/upload/${fileName }" download="${fileName }">
-                        <!--<img src="${root }/upload/${fileName }"  style="width: 100%" /> -->
+                        <img src="${root }/upload/${fileName }"  style="width: 100%" />
                     </a>
                 </div>
                 <div>

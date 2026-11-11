@@ -29,8 +29,10 @@ public class SimpleService {
         file.transferTo(localFile);
 
         String base64 = "";
-        //String mimeType = file.getContentType();
-        //base64 = "data:%s;base64,%s".formatted(mimeType, Base64.getEncoder().encodeToString(file.getBytes()));
+        String mimeType = file.getContentType();
+        base64 = "data:%s;base64,%s".formatted(mimeType,
+        		Base64.getEncoder().encodeToString(file.getBytes()));
+        
 
         return Map.of("fileName", fileName, "desc", desc != null ? desc : "", "base64", base64);
     }
