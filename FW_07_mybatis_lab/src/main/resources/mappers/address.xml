@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- TODO: 05-1. AddressDao에 대한 mapper(insert, delete, deleteByMno)를 구성해보세요. -->
+ <mapper namespace="com.ssafy.live.model.dao.AddressDao"> 
+  <!--  int insert(Address address)를 처리하세요. -->
+  <insert id="insert" useGeneratedKeys="true" keyProperty="ano">
+	insert into address (mno, title, address, detail_address, x, y)
+	values (#{mno}, #{title}, #{address}, #{detailAddress}, #{x}, #{y}) 
+  </insert>
+  <!--  int delete(int ano)를 처리하세요. -->
+  <delete id="delete">
+  delete from address where ano=#{ano}
+  </delete>
+  <!--  int deleteByMno(int mno)를 처리하세요. -->
+  <delete id="deleteByMno">
+  delete from address where mno=#{mno}
+  </delete>
+  <!--  TODO: 06-3. Address select(int ano) 를 처리하세요. -->
+  <select id="select" resultMap="addressMap">
+  	select * from address where ano=#{ano}
+  </select>
+  <!--  TODO: 08-1. Address selectDetail(int ano)를 처리하세요. -->
+  <select id="selectDetail" resultMap="addressMemberMap">
+  select a.*, m.*
+  from address a join member m using(mno)
+  where ano = #{ano}
+  </select>
+  <!--  TODO: 10-1. List<Address> queryStructureChange(Map<String, Object> param)를 처리하세요. -->
+  <!--  map의 key 속성을 where의 조건으로, word 속성을 조건의 값으로 -->
+  <!--  TODO: 11-1. List<Address> dynamicSelect(Map<String, Object> param)를 처리하세요. -->
+  <!--  동적 쿼리를 사용하며 map의 key와 word를 활용한다. -->
+  <!--  TODO: 12-1. List<Address> selectUseIn(List<String> titles)을 처리하세요. -->
+  <!--  TODO: 13-1. int dynamicUpdate(Address address)를 처리하세요. -->
+  <!--  TODO: 14-1. List<Address> carefulQuery(String addr, int mno)를 처리하세요. -->
+  <!--  address는 addr을 포함하며 mno는 mno보다 작은 데이터  ![CDATA[ . . . ]]  -->
+  <!--  TODO: 06-5. Address에 대한 기본 resultMap을 만들어보자. -->
+  <resultMap type="address" id="addressMap" autoMapping="true">
+  	<id column="ano" property="ano"/>
+  	<result column="detail_address" property="detailAddress"/>
+  </resultMap>
+	
+	<resultMap type="address" id="addressMemberMap" autoMapping="true"
+	extends="addressMap">
+		<association property="member" column="mno"
+		resultMap="com.ssafy.live.model.dao.MemberDao.memberMap" autoMapping="true"></association>
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
+  <!-- END -->
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.live.model.dao.MemberDao">
+
+  <!-- TODO: 03-2. MemberDao에 대한 insert를 작성해보세요. -->
+	<insert id="insert" parameterType="member" useGeneratedKeys="true" keyProperty="mno">
+	insert into member (name, email, password) values(#{name}, #{email}, #{password} )
+	</insert>
+  <!-- END -->
+
+  <!-- TODO: 04-1. update, delete, updateProfile에 대한 코드를 확인하세요.  -->
+  <update id="update"> UPDATE member SET name = #{name}, role = #{role} WHERE email = #{email} </update>
+
+  <update id="updatePassword"> UPDATE member SET password = #{password} WHERE email = #{email} </update>
+
+  <update id="updateProfile"> UPDATE member SET profile = #{profile} WHERE email = #{email} </update>
+
+  <update id="updateRefresh"> UPDATE member SET refresh = #{refresh} WHERE email = #{email} </update>
+
+  <update id="updateOauthInfo"> UPDATE member SET oauth_provider = #{oauthProvider}, oauth_id =
+    #{oauthId} WHERE email = #{email} </update>
+
+  <delete id="delete"> DELETE FROM member WHERE mno = #{mno} </delete>
+
+
+  <!-- TODO: 06-1. Member select(String email)에 대한 코드를 확인하세요.  -->
+  <select id="select" resultType="Member">
+  SELECT * FROM member WHERE email = #{email}
+  </select>
+
+  <!-- TODO: 07-1. Member에 대한 기본 resultMap을 만들고 이를 이용해서 List<Member> searchAll()를 처리하세요. -->
+  <select id ="searchAll" resultMap="memberMap">
+  	select * from member order by mno
+  </select>
+  <!-- END -->
+
+  <!-- TODO: 09-1. Member selectDetail(String email)을 처리해보세요. -->
+  <select id="selectDetail" resultMap="memberAddressMap">
+  select m.*, a.*
+  from member m left join address a using(mno)
+  where email=#{email}
+  </select>
+  <!-- END -->
+
+  <!-- TODO: 15-1. int getTotalCount(SearchCondition condition)를 처리해보세요. -->
+  <!--  이때 sql 태그를 통해 공통 쿼리를 작성한다. -->
+  <!-- TODO: 15-3. List<Member> search(SearchCondition condition)를 처리해보세요. -->
+
+  <!-- END -->
+<resultMap type="member" id="memberMap" autoMapping="true">
+<id column="mno" property="mno" />
+</resultMap>
+
+<resultMap type="member" id="memberAddressMap" autoMapping="true" extends="memberMap">
+	<collection property="addresses" column="mno" resultMap="com.ssafy.live.model.dao.AddressDao.addressMap"
+	ofType="address" notNullColumn="ano"></collection>
+</resultMap>
+
+</mapper>
+
