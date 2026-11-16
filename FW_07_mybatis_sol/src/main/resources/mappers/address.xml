@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- TODO: 05-1. AddressDao에 대한 mapper(insert, delete, deleteByMno)를 구성해보세요. -->
+<mapper namespace="com.ssafy.live.model.dao.AddressDao">
+
+  <!--  int insert(Address address)를 처리하세요. -->
+  <insert id="insert" useGeneratedKeys="true" keyProperty="ano">
+    INSERT INTO address (mno, title, address, detail_address, x, y)
+    VALUES (#{mno}, #{title}, #{address}, #{detailAddress}, #{x}, #{y})
+  </insert>
+
+  <!--  int delete(int ano)를 처리하세요. -->
+  <delete id="delete">
+    DELETE FROM address
+    WHERE ano = #{ano}
+  </delete>
+
+  <!--  int deleteByMno(int mno)를 처리하세요. -->
+  <delete id="deleteByMno">
+    DELETE FROM address
+    WHERE mno = #{mno}
+  </delete>
+
+  <!--  TODO: 06-3. Address select(int ano) 를 처리하세요. -->
+  <select id="select" resultMap="addressMap">
+    <!-- select * from address where ano=#{ano} -->
+    SELECT ano, mno, title, address, detail_address, x, y
+    FROM address
+    WHERE ano = #{ano}
+  </select>
+
+  <!--  TODO: 08-1. Address selectDetail(int ano)를 처리하세요. -->
+  <select id="selectDetail" resultMap="addressMemberMap">
+    SELECT a.*, m.*
+    FROM address a
+    JOIN member m USING (mno)
+    WHERE ano = #{ano}
+  </select>
+
+  <!--  TODO: 10-1. List<Address> queryStructureChange(Map<String, Object> param)를 처리하세요. -->
+  <!--  map의 key 속성을 where의 조건으로, word 속성을 조건의 값으로 -->
+  <select id="queryStructureChange" resultMap="addressMap">
+    SELECT *
+    FROM address
+    WHERE ${key} = #{word}
+  </select>
+
+  <!--  TODO: 11-1. List<Address> dynamicSelect(Map<String, Object> param)를 처리하세요. -->
+  <!--  동적 쿼리를 사용하며 map의 key와 word를 활용한다. -->
+  <select id="dynamicSelect" resultMap="addressMap">
+    <!-- select * from address where 1=1 <if test="title!=null"> and title = #{title} </if> <if test="mno!=null"> and mno=#{mno} </if> -->
+    <!-- select * from address <where> <if test="title!=null"> and title = #{title} </if> <if test="mno!=null"> and mno=#{mno} </if> </where> -->
+    SELECT *
+    FROM address
+    <trim prefix="where" prefixOverrides="or|and">
+      <if test="title != null">
+        AND title = #{title}
+      </if>
+      <if test="mno != null">
+        AND mno = #{mno}
+      </if>
+    </trim>
+  </select>
+
+  <!--  TODO: 12-1. List<Address> selectUseIn(List<String> titles)을 처리하세요. -->
+  <select id="selectUseIn" resultMap="addressMap">
+    SELECT *
+    FROM address
+    <where>
+      <foreach collection="titles" item="title" open="title in (" separator="," close=")">
+        #{title}
+      </foreach>
+    </where>
+  </select>
+
+  <!--  TODO: 13-1. int dynamicUpdate(Address address)를 처리하세요. -->
+  <update id="dynamicUpdate">
+    UPDATE address
+    <!-- <set> 
+           <if test="mno !=null">mno=#{mno},</if> 
+           <if test="title !=null">title=#{title},</if> 
+           <if test="address !=null">address=#{address},</if> 
+           <if test="detailAddress !=null">detail_address=#{detailAddress},</if> 
+           <if test="x !=null">x=#{x},</if> 
+           <if test="y !=null">y=#{y},</if> 
+        </set> 
+    -->
+    <trim prefix="set" suffixOverrides=",">
+      <if test="mno != null">mno = #{mno},</if>
+      <if test="title != null">title = #{title},</if>
+      <if test="address != null">address = #{address},</if>
+      <if test="detailAddress != null">detail_address = #{detailAddress},</if>
+      <if test="x != null">x = #{x},</if>
+      <if test="y != null">y = #{y},</if>
+    </trim>
+    WHERE ano = #{ano}
+  </update>
+
+  <!--  TODO: 14-1. List<Address> carefulQuery(String addr, int mno)를 처리하세요. -->
+  <!--  address는 addr을 포함하며 mno는 mno보다 작은 데이터  ![CDATA[ . . . ]]  -->
+  <select id="carefulQuery" resultMap="addressMap">
+    SELECT *
+    FROM address
+    WHERE mno &lt; #{mno}
+      AND address LIKE CONCAT('%', #{addr}, '%')
+  </select>
+
+  <!--  TODO: 06-5. Address에 대한 기본 resultMap을 만들어보자. -->
+  <resultMap type="Address" id="addressMap" autoMapping="true">
+    <id column="ano" property="ano" />
+    <result column="detail_address" property="detailAddress" />
+  </resultMap>
+
+  <resultMap type="Address" id="addressMemberMap" extends="addressMap" autoMapping="true">
+    <association property="member"
+                 column="mno" 
+                 resultMap="com.ssafy.live.model.dao.MemberDao.memberMap"/>
+  </resultMap>
+
+</mapper>
