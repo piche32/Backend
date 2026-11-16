@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.sample.model.dao.NoticeDao">
+    <!-- TODO 2: selectAll, insert SQL을 작성하시오. -->
+    <select id="selectAll" resultMap="noticeMap">
+    SELECT * FROM notice ORDER BY notice_id
+    </select>
+    <insert id="insert" parameterType="Notice"
+    useGeneratedKeys="true" keyProperty="noticeId">
+    INSERT INTO notice (cat_id, mno, title, content)
+	VALUES (#{catId}, #{mno}, #{title}, #{content})
+    </insert>
+    <resultMap type="notice" id="noticeMap" autoMapping="true">
+    <id column="notice_id" property="noticeId"/>
+    <result column="cat_id" property="catId"/>
+    <result column="view_count" property="viewCount"/>
+    </resultMap>
+</mapper>
