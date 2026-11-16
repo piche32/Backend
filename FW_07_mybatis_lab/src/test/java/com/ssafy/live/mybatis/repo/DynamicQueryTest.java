@@ -51,8 +51,7 @@ public class DynamicQueryTest {
         Assertions.assertEquals(0, address.size());
 
         // 하지만 또다른 문제
-        // address = aDao.dynamicSelect(Map.of("title", "기본", "mno", "100"));
-        // Assertions.assertEquals(0, address.size());
+         address = aDao.dynamicSelect(Map.of());
     }
 
     // TODO: 12-2. selectUseIn를 작성 후 테스트 해보세요.
