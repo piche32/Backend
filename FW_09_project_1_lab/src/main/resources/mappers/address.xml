@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.live.model.dao.AddressDao">
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="ano"> INSERT INTO address (mno, title,
+    address, detail_address, x, y) VALUES (#{mno}, #{title}, #{address}, #{detailAddress}, #{x},
+    #{y}) </insert>
+
+  <delete id="delete"> DELETE FROM address WHERE ano = #{ano} </delete>
+
+  <delete id="deleteByMno"> DELETE FROM address WHERE mno = #{mno} </delete>
+
+  <resultMap type="Address" id="addressMap" autoMapping="true">
+    <id column="ano" property="ano" />
+    <result column="detail_address" property="detailAddress" />
+  </resultMap>
+
+  <resultMap type="Address" id="addressMemberMap" extends="addressMap" autoMapping="true">
+    <association property="member"
+      column="mno"
+      resultMap="com.ssafy.live.model.dao.MemberDao.memberMap" />
+  </resultMap>
+
+</mapper>

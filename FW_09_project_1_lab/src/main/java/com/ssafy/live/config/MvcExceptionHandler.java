@@ -1,0 +1,47 @@
+package com.ssafy.live.config;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+// TODO: 02-1.Controller에서 발생하는 Exception을 로깅하고 적절한 오류 페이지로 전환하자.
+@ControllerAdvice
+public class MvcExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView handle500(Exception e) {
+        log.info("[@Controller에서 발생한 오류 처리]: {}", e.getMessage());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", e.getMessage());
+        mav.setViewName("error/500");
+        return mav;
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public ModelAndView handle405(Exception e) {
+        log.info("[@Controller에서 발생한 오류 처리]: {}", e.getMessage());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", e.getMessage());
+        mav.setViewName("error/405");
+        return mav;
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView handle404(Exception e) {
+        log.info("[@Controller에서 발생한 오류 처리]: {}", e.getMessage());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", e.getMessage());
+        mav.setViewName("error/404");
+        return mav;
+    }
+}

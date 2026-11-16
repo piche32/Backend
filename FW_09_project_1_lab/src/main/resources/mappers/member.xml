@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.live.model.dao.MemberDao">
+
+  <insert id="insert" keyProperty="mno" useGeneratedKeys="true"> INSERT INTO member (name, email,
+    password) VALUES (#{name}, #{email}, #{password}) </insert>
+
+  <update id="update"> UPDATE member SET name = #{name}, role = #{role} WHERE email = #{email} </update>
+
+  <update id="updatePassword"> UPDATE member SET password = #{password} WHERE email = #{email} </update>
+
+  <update id="updateProfile"> UPDATE member SET profile = #{profile} WHERE email = #{email} </update>
+
+  <update id="updateRefresh"> UPDATE member SET refresh = #{refresh} WHERE email = #{email} </update>
+
+  <update id="updateOauthInfo"> UPDATE member SET oauth_provider = #{oauthProvider}, oauth_id =
+    #{oauthId} WHERE email = #{email} </update>
+
+  <delete id="delete"> DELETE FROM member WHERE mno = #{mno} </delete>
+
+
+  <select id="select" resultType="Member"> SELECT * FROM member WHERE email = #{email} </select>
+
+  <select id="searchAll" resultMap="memberMap"> SELECT * FROM member ORDER BY mno DESC </select>
+
+  <resultMap id="memberMap" type="Member" autoMapping="true">
+    <id property="mno" column="mno" />
+  </resultMap>
+
+  <select id="selectDetail" resultMap="memberAddressMap"> SELECT m.*, a.* FROM member m LEFT JOIN
+    address a USING (mno) WHERE email = #{email} </select>
+
+  <resultMap id="memberAddressMap" type="Member" extends="memberMap" autoMapping="true">
+    <collection property="addresses"
+      column="mno"
+      ofType="Address"
+      notNullColumn="ano"
+      resultMap="com.ssafy.live.model.dao.AddressDao.addressMap" />
+  </resultMap>
+  <select id="getTotalCount"> SELECT COUNT(mno) FROM member <include refid="searchCondition"></include>
+  </select>
+
+  <sql id="searchCondition">
+    <where>
+      <if test="key == 'name' and word != null"> name LIKE CONCAT('%', #{word}, '%') </if>
+      <if
+        test="key == 'email' and word != null"> email LIKE CONCAT('%', #{word}, '%') </if>
+    </where>
+  </sql>
+
+  <select id="search"> SELECT * FROM member <include refid="searchCondition"></include> ORDER BY mno
+    DESC LIMIT #{offset}, #{itemsPerPage} </select>
+
+  <select id="selectByOauth" resultMap="memberMap"> SELECT * FROM member WHERE oauth_provider =
+    #{oauthProvider} AND oauth_id = #{oauthId} </select>
+
+
+</mapper>
