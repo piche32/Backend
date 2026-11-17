@@ -1,0 +1,46 @@
+package com.ssafy.live.security.dto;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import com.ssafy.live.model.dto.Member;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
+// TODO: 07-1. UserDetails의 확장인 CustomUserDetails를 작성하세요.
+//  Member를 포함하도록 구현한다.
+ public class CustomUserDetails implements UserDetails {
+	
+	private @NonNull Member member;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> roles = new ArrayList<>();
+		if(member.getRole() != null) {
+			roles.add(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
+		}
+		
+		return roles;
+	}
+
+	@Override
+	public @Nullable String getPassword() {
+		return member.getPassword();
+	}
+
+	@Override
+	public String getUsername() { //P.K에 해당하는 정보
+		return member.getEmail();
+	}
+	
+}
+
+// END
